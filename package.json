@@ -26,6 +26,7 @@
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.10.3",
     "@types/jest": "^29.5.12",
+    "@types/migrate-mongo": "^10.0.4",
     "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^7.11.0",
     "@typescript-eslint/parser": "^7.11.0",
@@ -38,5 +39,10 @@
     "prettier": "^3.2.5",
     "ts-jest": "^29.1.4",
     "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "migrate-mongo": "^11.0.0",
+    "mongodb": "^4.17.2"
   }
 }
