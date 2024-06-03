@@ -2,7 +2,7 @@
 module.exports = {
     mongodb: {
         // Change (or review) the url to your MongoDB:
-        url: "mongodb://localhost:27017",
+        url: `${process.env.MongoDb__Url}`,
 
         // Change this to your database name
         databaseName: "migrate-mongo",

@@ -19,10 +19,18 @@
 
 import { create, database, config, up, down, status } from "migrate-mongo";
 import { Command } from "commander";
+import { config as dotenv } from "dotenv";
+import { expand } from "dotenv-expand";
+import pkgjson from "../package.json";
 
 const program = new Command();
 
-program.name("migrate-mongo").description("CLI to migrate  mongodb").version("0.0.1");
+program.name(pkgjson.name).description("CLI to migrate  mongodb").version(pkgjson.version);
+
+program.hook("preSubcommand", () => {
+    const envOutput = dotenv({ path: [".env.local", ".env"] });
+    expand(envOutput);
+});
 
 program
     .command("create [description]")
@@ -77,7 +85,7 @@ program
     .command("status")
     .description("print the changelog of the database")
     .action(async () => {
-        const { db } = await database.connect();
+        const { db, client } = await database.connect();
 
         try {
             const migrationStatus = await status(db);
@@ -86,7 +94,7 @@ program
             console.error(`ERROR: ${error.message}`, error.stack);
             process.exit(1);
         } finally {
-            await db.close();
+            await client.close();
         }
     });
 
@@ -94,8 +102,7 @@ program
     .command("dropDatabase")
     .description("deletes the database")
     .action(() => {
-        console.log("TODO create");
+        console.log("TODO dropDatabase");
     });
 
 program.parse();
-program.exitOverride;
