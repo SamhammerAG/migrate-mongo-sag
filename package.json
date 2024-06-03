@@ -14,7 +14,7 @@
   "license": "MIT",
   "scripts": {
     "build": "ncc build src/index.ts",
-    "run": "ncc build src/index.ts && node dist/index.js",
+    "migrate-mongo": "ncc build src/index.ts && node dist/index.js",
     "format": "prettier --write --parser typescript ./src",
     "lint": "eslint ./src",
     "test": "jest"

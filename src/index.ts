@@ -17,8 +17,7 @@
 //https://github.com/seppevs/migrate-mongo/blob/master/lib/env/config.js#L66C36-L66C48
 //we can use some logic to load some pre/post-processing scripts that are defined externally (see sample above)
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { init, create, database, config, up, down, status } from "migrate-mongo";
+import { create, database, config, up, down, status } from "migrate-mongo";
 import { Command } from "commander";
 
 const program = new Command();
@@ -26,40 +25,69 @@ const program = new Command();
 program.name("migrate-mongo").description("CLI to migrate  mongodb").version("0.0.1");
 
 program
-    .command("init")
-    .description("initialize a new migration project")
-    .action(() => {
-        console.log("TODO init");
-    });
-
-program
-    .command("create")
+    .command("create [description]")
     .description("create a new database migration with the provided description")
-    .action(() => {
-        console.log("TODO create");
+    .action(async (description) => {
+        try {
+            const fileName = create(description);
+            const configuration = await config.read();
+            console.log(`CREATED: ${configuration.migrationsDir}/${fileName}`);
+        } catch (error) {
+            console.error(`ERROR: ${error.message}`, error.stack);
+            process.exit(1);
+        }
     });
 
 program
     .command("up")
     .description("run all pending database migrations")
-    .action(() => {
-        // TODO merge migrationScripts and brandScripts
-        console.log("TODO create");
+    .action(async () => {
+        const { db, client } = await database.connect();
+
+        try {
+            const migrated = await up(db, client);
+            migrated.forEach((fileName) => console.log(`MIGRATED UP: ${fileName}`));
+        } catch (error) {
+            console.error(`ERROR: ${error.message}`, error.stack);
+            error.migrated.forEach((fileName) => console.log(`MIGRATED UP: ${fileName}`));
+            process.exit(1);
+        } finally {
+            await client.close();
+        }
     });
 
 program
     .command("down")
     .description("undo the last applied database migration")
-    .action(() => {
-        // TODO merge migrationScripts and brandScripts
-        console.log("TODO create");
+    .action(async () => {
+        const { db, client } = await database.connect();
+
+        try {
+            const migratedDown = await down(db, client);
+            migratedDown.forEach((fileName) => console.log(`MIGRATED DOWN: ${fileName}`));
+        } catch (error) {
+            console.error(`ERROR: ${error.message}`, error.stack);
+            process.exit(1);
+        } finally {
+            await client.close();
+        }
     });
 
 program
     .command("status")
     .description("print the changelog of the database")
-    .action(() => {
-        console.log("TODO create");
+    .action(async () => {
+        const { db } = await database.connect();
+
+        try {
+            const migrationStatus = await status(db);
+            migrationStatus.forEach((item) => console.log(`APPLIED: ${item.appliedAt} - ${item.fileName}`));
+        } catch (error) {
+            console.error(`ERROR: ${error.message}`, error.stack);
+            process.exit(1);
+        } finally {
+            await db.close();
+        }
     });
 
 program
@@ -70,3 +98,4 @@ program
     });
 
 program.parse();
+program.exitOverride;
