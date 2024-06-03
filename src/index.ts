@@ -19,17 +19,15 @@
 
 import { create, database, config, up, down, status } from "migrate-mongo";
 import { Command } from "commander";
-import { config as dotenv } from "dotenv";
-import { expand } from "dotenv-expand";
 import pkgjson from "../package.json";
+import { loadEnv } from "./env";
 
 const program = new Command();
 
 program.name(pkgjson.name).description("CLI to migrate  mongodb").version(pkgjson.version);
 
-program.hook("preSubcommand", () => {
-    const envOutput = dotenv({ path: [".env.local", ".env"] });
-    expand(envOutput);
+program.hook("preSubcommand", async () => {
+    loadEnv();
 });
 
 program
