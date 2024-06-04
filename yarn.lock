@@ -1027,6 +1027,36 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@samhammer/migrate-mongo-sag@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@samhammer/migrate-mongo-sag@workspace:."
+  dependencies:
+    "@rushstack/eslint-patch": "npm:^1.10.3"
+    "@samhammer/vault-client-sag": "npm:^1.1.0"
+    "@types/lodash": "npm:^4"
+    "@types/migrate-mongo": "npm:^10.0.4"
+    "@types/node": "npm:^18.0.0"
+    "@typescript-eslint/eslint-plugin": "npm:^7.11.0"
+    "@typescript-eslint/parser": "npm:^7.11.0"
+    commander: "npm:^12.1.0"
+    dotenv: "npm:^16.4.5"
+    dotenv-expand: "npm:^11.0.6"
+    eslint: "npm:^8.57.0"
+    eslint-config-prettier: "npm:^8.10.0"
+    eslint-plugin-import: "npm:^2.29.1"
+    eslint-plugin-prettier: "npm:^5.1.3"
+    lodash: "npm:^4.17.21"
+    migrate-mongo: "npm:^11.0.0"
+    mongodb: "npm:^4.17.2"
+    prettier: "npm:^3.2.5"
+    typescript: "npm:^5.4.5"
+    vite: "npm:^5.2.12"
+    vitest: "npm:^1.6.0"
+  bin:
+    migrate-mongo: dist/migrate-mongo.js
+  languageName: unknown
+  linkType: soft
+
 "@samhammer/vault-client-sag@npm:^1.1.0":
   version: 1.1.0
   resolution: "@samhammer/vault-client-sag@npm:1.1.0"
@@ -3823,34 +3853,6 @@ __metadata:
   checksum: 58fa99bc5265edec206e9163a1d2cec5fabc46a5b473c45f4a700adce88c2520456ae35f2b301e4410fb3afb27e9521fb2813f6fc96be0a48a89430e0916a772
   languageName: node
   linkType: hard
-
-"migrate-mongo-sag@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "migrate-mongo-sag@workspace:."
-  dependencies:
-    "@rushstack/eslint-patch": "npm:^1.10.3"
-    "@samhammer/vault-client-sag": "npm:^1.1.0"
-    "@types/lodash": "npm:^4"
-    "@types/migrate-mongo": "npm:^10.0.4"
-    "@types/node": "npm:^18.0.0"
-    "@typescript-eslint/eslint-plugin": "npm:^7.11.0"
-    "@typescript-eslint/parser": "npm:^7.11.0"
-    commander: "npm:^12.1.0"
-    dotenv: "npm:^16.4.5"
-    dotenv-expand: "npm:^11.0.6"
-    eslint: "npm:^8.57.0"
-    eslint-config-prettier: "npm:^8.10.0"
-    eslint-plugin-import: "npm:^2.29.1"
-    eslint-plugin-prettier: "npm:^5.1.3"
-    lodash: "npm:^4.17.21"
-    migrate-mongo: "npm:^11.0.0"
-    mongodb: "npm:^4.17.2"
-    prettier: "npm:^3.2.5"
-    typescript: "npm:^5.4.5"
-    vite: "npm:^5.2.12"
-    vitest: "npm:^1.6.0"
-  languageName: unknown
-  linkType: soft
 
 "migrate-mongo@npm:^11.0.0":
   version: 11.0.0
