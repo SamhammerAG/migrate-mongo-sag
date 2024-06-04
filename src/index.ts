@@ -27,7 +27,7 @@ const program = new Command();
 program.name(pkgjson.name).description("CLI to migrate  mongodb").version(pkgjson.version);
 
 program.hook("preSubcommand", async () => {
-    loadEnv();
+    await loadEnv();
 });
 
 program
