@@ -1,4 +1,5 @@
 import { getVaultKeys } from "../src/env";
+import { describe, it, expect } from "vitest";
 import path from "path";
 
 describe("getVaultKeys", () => {
