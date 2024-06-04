@@ -1,4 +1,4 @@
-import { getVaultKeys } from "../src/env";
+import { getVaultKeys } from "../env";
 import { describe, it, expect } from "vitest";
 import path from "path";
 
