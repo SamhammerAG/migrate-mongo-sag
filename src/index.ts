@@ -7,10 +7,16 @@ import { loadEnv } from "./env";
 
 const program = new Command();
 
-program.name("migrate-mongo").description("CLI to migrate  mongodb").version(pkgjson.version);
+program
+    .name("migrate-mongo")
+    .description("CLI to migrate mongodb")
+    .version(pkgjson.version)
+    .option("-e, --env <env>", "set environment")
+    .option("-b, --brand <brand>", "set brand")
+    .option("-a, --app <app>", "set app");
 
-program.hook("preSubcommand", async () => {
-    await loadEnv();
+program.hook("preSubcommand", async (cmd) => {
+    await loadEnv(cmd);
 });
 
 program
