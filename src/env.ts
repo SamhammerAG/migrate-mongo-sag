@@ -2,11 +2,15 @@ import { config, populate } from "dotenv";
 import { expand } from "dotenv-expand";
 import { getVault } from "@samhammer/vault-client-sag";
 import { clone, invert, pickBy } from "lodash";
+import { execSync } from "child_process";
 import type { Command } from "commander";
 
 export async function loadEnv(cmd: Command) {
     // load command options to process.env
     loadCommand(cmd);
+
+    // load branch to process.env
+    loadBranchName();
 
     // define files to load
     const path = [".env.local", ".env"];
@@ -22,7 +26,7 @@ export async function loadEnv(cmd: Command) {
 }
 
 export function getVaultKeys(path: string[]) {
-    // load env for vault to temporary env
+    // load env for vault to temporary env; otherwise placeholders that target a field with VaultKey would be replaced before VaultValues are loaded
     const tempEnv = clone(process.env);
     const vaultEnv = config({ path, processEnv: tempEnv });
     const vaultValues = pickBy(vaultEnv.parsed, (value) => value.startsWith("VaultKey"));
@@ -32,6 +36,7 @@ export function getVaultKeys(path: string[]) {
 }
 
 export async function loadCommand(cmd: Command) {
+    // only load options when they are set; otherwise we would overwrite env values with empty value
     const env = cmd.getOptionValue("env");
     const brand = cmd.getOptionValue("brand");
     const app = cmd.getOptionValue("app");
@@ -42,4 +47,17 @@ export async function loadCommand(cmd: Command) {
     if (app) parsed.App = app;
 
     populate(process.env, parsed, { override: true });
+}
+
+export function loadBranchName() {
+    // only load when not already defined
+    if (process.env.Branch) return;
+
+    const branchName = execSync("git rev-parse --abbrev-ref HEAD")
+        .toString("utf-8")
+        .replace(/[\n\r\s]+$/, "");
+
+    const parsed = { Branch: branchName };
+
+    populate(process.env, parsed);
 }
