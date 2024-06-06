@@ -76,7 +76,7 @@ program
 
         try {
             const migrationStatus = await status(db);
-            migrationStatus.forEach((item) => console.log(`APPLIED: ${item.appliedAt} - ${item.fileName}`));
+            migrationStatus.forEach((item) => console.log(`${item.appliedAt}: ${item.fileName}`));
         } catch (error) {
             console.error(`ERROR: ${error.message}`, error.stack);
             process.exit(1);

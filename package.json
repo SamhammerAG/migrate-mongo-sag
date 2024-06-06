@@ -21,10 +21,6 @@
     "lint": "eslint ./src",
     "test": "vitest run"
   },
-  "volta": {
-    "node": "18.19.0",
-    "yarn": "4.0.2"
-  },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.10.3",
     "@types/lodash": "^4",
@@ -49,5 +45,9 @@
     "lodash": "^4.17.21",
     "migrate-mongo": "^11.0.0",
     "mongodb": "^4.17.2"
+  },
+  "volta": {
+    "node": "18.19.0",
+    "yarn": "4.0.2"
   }
 }
