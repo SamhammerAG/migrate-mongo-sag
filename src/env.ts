@@ -39,12 +39,12 @@ export async function loadCommand(cmd: Command) {
     // only load options when they are set; otherwise we would overwrite env values with empty value
     const env = cmd.getOptionValue("env");
     const brand = cmd.getOptionValue("brand");
-    const app = cmd.getOptionValue("app");
+    const suffix = cmd.getOptionValue("suffix");
 
     const parsed = {} as Record<string, string>;
-    if (env) parsed.Env = env;
+    if (env) parsed.Environment = env;
     if (brand) parsed.Brand = brand;
-    if (app) parsed.App = app;
+    if (suffix) parsed.Suffix = suffix;
 
     populate(process.env, parsed, { override: true });
 }
