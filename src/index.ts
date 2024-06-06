@@ -12,9 +12,9 @@ program
     .name("migrate-mongo")
     .description("CLI to migrate mongodb")
     .version(pkgjson.version)
-    .option("-e, --env <env>", "set environment")
-    .option("-b, --brand <brand>", "set brand")
-    .option("-a, --app <app>", "set app");
+    .option("-e, --env <env>", "set process.env.Environment")
+    .option("-b, --brand <brand>", "set process.env.Brand")
+    .option("-s, --suffix <suffix>", "set process.env.Suffix");
 
 program.hook("preSubcommand", async (cmd) => {
     await loadEnv(cmd);
