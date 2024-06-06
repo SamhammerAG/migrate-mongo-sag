@@ -4,6 +4,7 @@ import { create, database, config, up, down, status } from "migrate-mongo";
 import { Command } from "commander";
 import pkgjson from "../package.json";
 import { loadEnv } from "./env";
+import { deleteDb } from "./dropDatabase";
 
 const program = new Command();
 
@@ -88,8 +89,18 @@ program
 program
     .command("dropDatabase")
     .description("deletes the database")
-    .action(() => {
-        console.log("TODO dropDatabase");
+    .action(async () => {
+        const { db, client } = await database.connect();
+
+        try {
+            const deleteStatus = await deleteDb(db);
+            console.log(`DROPPED DB:`, deleteStatus.databaseName, deleteStatus.userName);
+        } catch (error) {
+            console.error(`ERROR: ${error.message}`, error.stack);
+            process.exit(1);
+        } finally {
+            await client.close();
+        }
     });
 
 program.parse();
