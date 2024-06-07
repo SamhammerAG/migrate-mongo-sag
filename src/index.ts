@@ -3,7 +3,7 @@
 import { create, database, config, up, down, status } from "migrate-mongo";
 import { Command } from "commander";
 import pkgjson from "../package.json";
-import { loadEnv } from "./env";
+import { initEnv } from "./env";
 import { deleteDb } from "./dropDatabase";
 
 const program = new Command();
@@ -14,16 +14,21 @@ program
     .version(pkgjson.version)
     .option("-e, --env <env>", "set process.env.Environment")
     .option("-b, --brand <brand>", "set process.env.Brand")
-    .option("-s, --suffix <suffix>", "set process.env.Suffix");
+    .option("-s, --suffix <suffix>", "set process.env.Suffix")
+    .option("-d, --debug", "enable debug output");
 
 program.hook("preSubcommand", async (cmd) => {
-    await loadEnv(cmd);
+    process.env.DEBUG = cmd.getOptionValue("debug") ? "on" : "";
+    if (process.env.DEBUG) console.log("hook pre-command...");
+    await initEnv(cmd);
 });
 
 program
     .command("create [description]")
     .description("create a new database migration with the provided description")
     .action(async (description) => {
+        if (process.env.DEBUG) console.log("run command create...");
+
         try {
             const fileName = create(description);
             const configuration = await config.read();
@@ -38,6 +43,8 @@ program
     .command("up")
     .description("run all pending database migrations")
     .action(async () => {
+        if (process.env.DEBUG) console.log("run command up...");
+
         const { db, client } = await database.connect();
 
         try {
@@ -56,6 +63,8 @@ program
     .command("down")
     .description("undo the last applied database migration")
     .action(async () => {
+        if (process.env.DEBUG) console.log("run command down...");
+
         const { db, client } = await database.connect();
 
         try {
@@ -73,6 +82,8 @@ program
     .command("status")
     .description("print the changelog of the database")
     .action(async () => {
+        if (process.env.DEBUG) console.log("run command status...");
+
         const { db, client } = await database.connect();
 
         try {
@@ -90,6 +101,8 @@ program
     .command("dropDatabase")
     .description("deletes the database")
     .action(async () => {
+        if (process.env.DEBUG) console.log("run command dropDatabase...");
+
         const { db, client } = await database.connect();
 
         try {

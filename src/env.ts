@@ -5,24 +5,41 @@ import { clone, invert, pickBy } from "lodash";
 import { execSync } from "child_process";
 import type { Command } from "commander";
 
-export async function loadEnv(cmd: Command) {
-    // load command options to process.env
-    loadCommand(cmd);
+// define files to load
+const path = [".env.local", ".env"];
 
-    // load branch to process.env
-    loadBranchName();
+export async function initEnv(cmd: Command) {
+    try {
+        if (process.env.DEBUG) console.log("int env...");
 
-    // define files to load
-    const path = [".env.local", ".env"];
+        await loadCommand(cmd);
+        await loadBranchName();
+        await loadVault();
+        await loadEnvFiles();
+
+        if (process.env.DEBUG) console.log("finished init env");
+    } catch (error) {
+        console.error(`init env failed`, error);
+    }
+}
+
+export function loadEnvFiles() {
+    if (process.env.DEBUG) console.log("loading env files...");
+
+    const env = config({ path });
+    expand({ parsed: env.parsed });
+}
+
+export async function loadVault() {
+    if (process.env.DEBUG) console.log("loading vault...");
 
     // load vault values to process.env
     const vaultKeys = getVaultKeys(path);
+    if (process.env.DEBUG) console.log("requesting vault keys", vaultKeys);
+
     const vault = await getVault();
     await vault.loadSecretsToEnv(vaultKeys);
-
-    // load env to process.env
-    const env = config({ path });
-    expand({ parsed: env.parsed });
+    if (process.env.DEBUG) console.log("finished loading from vault");
 }
 
 export function getVaultKeys(path: string[]) {
@@ -36,6 +53,8 @@ export function getVaultKeys(path: string[]) {
 }
 
 export async function loadCommand(cmd: Command) {
+    if (process.env.DEBUG) console.log("loading command options...");
+
     // only load options when they are set; otherwise we would overwrite env values with empty value
     const env = cmd.getOptionValue("env");
     const brand = cmd.getOptionValue("brand");
@@ -47,17 +66,25 @@ export async function loadCommand(cmd: Command) {
     if (suffix) parsed.Suffix = suffix;
 
     populate(process.env, parsed, { override: true });
+
+    if (process.env.DEBUG) console.log("set options", parsed);
 }
 
 export function loadBranchName() {
+    if (process.env.DEBUG) console.log("loading branch...");
+
     // only load when not already defined
-    if (process.env.Branch) return;
+    if (process.env.Branch) {
+        if (process.env.DEBUG) console.log("skip branch cause its defined already", process.env.Branch);
+        return;
+    }
 
     const branchName = execSync("git rev-parse --abbrev-ref HEAD")
         .toString("utf-8")
         .replace(/[\n\r\s]+$/, "");
 
     const parsed = { Branch: branchName };
-
     populate(process.env, parsed);
+
+    if (process.env.DEBUG) console.log("set branch", parsed);
 }
