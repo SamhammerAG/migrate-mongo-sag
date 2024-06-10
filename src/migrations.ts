@@ -1,8 +1,7 @@
 import { config } from "migrate-mongo";
 import path, { sep } from "path";
-import { tmpdir } from "os";
-import { mkdtemp, readdir, copyFile } from "fs/promises";
-import { existsSync } from "fs";
+import { readdir, copyFile, rm } from "fs/promises";
+import { existsSync, mkdirSync } from "fs";
 
 export async function initMigrations() {
     if (!process.env.DefaultMigrations) throw new Error("enviroment variable DefaultMigrations is required");
@@ -12,7 +11,7 @@ export async function initMigrations() {
     const defaultDir = path.join(rootDir, process.env.DefaultMigrations);
     const brandDir = path.join(rootDir, process.env.Brand);
 
-    const tempDir = await createMigrationsDir();
+    const tempDir = await initTempDir();
     await copyMigrationFiles(defaultDir, tempDir);
     await copyMigrationFiles(brandDir, tempDir);
 
@@ -31,10 +30,35 @@ export async function initCreateMigrations(defaultMigrations: boolean | undefine
     await updateConfig(migrationDir);
 }
 
-async function createMigrationsDir() {
-    const tempDir = await mkdtemp(`${tmpdir()}${sep}`);
-    if (process.env.TRACE) console.log("created tempDir", tempDir);
+async function initTempDir() {
+    const tempDir = await createTempDir();
+    await cleanupTempDir(tempDir);
     return tempDir;
+}
+
+async function createTempDir() {
+    const tempDir = path.join(process.cwd(), ".temp");
+
+    if (!existsSync(tempDir)) {
+        mkdirSync(tempDir);
+        if (process.env.TRACE) console.log("created tempDir", tempDir);
+    } else {
+        if (process.env.TRACE) console.log("using tempDir", tempDir);
+    }
+
+    return tempDir;
+}
+
+async function cleanupTempDir(tempDir: string) {
+    const files = await readdir(tempDir, { withFileTypes: true });
+
+    for (const file of files) {
+        const filePath = path.join(tempDir, file.name);
+        if (process.env.TRACE) console.log("remove tempFile", filePath);
+        await rm(filePath);
+    }
+
+    if (process.env.TRACE) console.log("cleaned up tempDir", tempDir);
 }
 
 async function updateConfig(migrationsDir: string) {
