@@ -20,9 +20,20 @@ export async function initMigrations() {
     await updateConfig(tempDir);
 }
 
+export async function initCreateMigrations(defaultMigrations: boolean | undefined) {
+    if (!process.env.DefaultMigrations) throw new Error("enviroment variable DefaultMigrations is required");
+
+    const rootDir = await resolveMigrationsDirPath();
+    const subDir = defaultMigrations || !process.env.Brand ? process.env.DefaultMigrations : process.env.Brand;
+    const migrationDir = path.join(rootDir, subDir);
+
+    // config must be updated at last, cause resolveMigrationsDirPath must get rootDir from original config
+    await updateConfig(migrationDir);
+}
+
 async function createMigrationsDir() {
     const tempDir = await mkdtemp(`${tmpdir()}${sep}`);
-    if (process.env.DEBUG) console.log("created tempDir", tempDir);
+    if (process.env.TRACE) console.log("created tempDir", tempDir);
     return tempDir;
 }
 
@@ -30,12 +41,12 @@ async function updateConfig(migrationsDir: string) {
     const configContent = await config.read();
     configContent.migrationsDir = migrationsDir;
     config.set(configContent);
-    if (process.env.DEBUG) console.log("configured new migrationDir", migrationsDir);
+    if (process.env.TRACE) console.log("configured new migrationDir", migrationsDir);
 }
 
 async function copyMigrationFiles(srcDir: string, destinationDir: string) {
     if (!existsSync(srcDir)) {
-        if (process.env.DEBUG) console.log("sourceDir does not exist, skipping", srcDir);
+        if (process.env.TRACE) console.log("sourceDir does not exist, skipping", srcDir);
         return;
     }
 
@@ -45,7 +56,7 @@ async function copyMigrationFiles(srcDir: string, destinationDir: string) {
     for (const file of files) {
         const srcFile = `${srcDir}${sep}${file.name}`;
         const destFile = `${destinationDir}${sep}${file.name}`;
-        if (process.env.DEBUG) console.log("copy file", srcFile, destFile);
+        if (process.env.TRACE) console.log("copy file", srcFile, destFile);
         await copyFile(srcFile, destFile);
     }
 }

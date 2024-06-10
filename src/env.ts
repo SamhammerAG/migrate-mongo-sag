@@ -10,36 +10,36 @@ const path = [".env.local", ".env"];
 
 export async function initEnv(cmd: Command) {
     try {
-        if (process.env.DEBUG) console.log("int env...");
+        if (process.env.TRACE) console.log("int env...");
 
         await loadCommand(cmd);
         await loadBranchName();
         await loadVault();
         await loadEnvFiles();
 
-        if (process.env.DEBUG) console.log("finished init env");
+        if (process.env.TRACE) console.log("finished init env");
     } catch (error) {
         console.error(`init env failed`, error);
     }
 }
 
 export function loadEnvFiles() {
-    if (process.env.DEBUG) console.log("loading env files...");
+    if (process.env.TRACE) console.log("loading env files...");
 
     const env = config({ path });
     expand({ parsed: env.parsed });
 }
 
 export async function loadVault() {
-    if (process.env.DEBUG) console.log("loading vault...");
+    if (process.env.TRACE) console.log("loading vault...");
 
     // load vault values to process.env
     const vaultKeys = getVaultKeys(path);
-    if (process.env.DEBUG) console.log("requesting vault keys", vaultKeys);
+    if (process.env.TRACE) console.log("requesting vault keys", vaultKeys);
 
     const vault = await getVault();
     await vault.loadSecretsToEnv(vaultKeys);
-    if (process.env.DEBUG) console.log("finished loading from vault");
+    if (process.env.TRACE) console.log("finished loading from vault");
 }
 
 export function getVaultKeys(path: string[]) {
@@ -53,7 +53,7 @@ export function getVaultKeys(path: string[]) {
 }
 
 export async function loadCommand(cmd: Command) {
-    if (process.env.DEBUG) console.log("loading command options...");
+    if (process.env.TRACE) console.log("loading command options...");
 
     // only load options when they are set; otherwise we would overwrite env values with empty value
     const env = cmd.getOptionValue("env");
@@ -67,15 +67,15 @@ export async function loadCommand(cmd: Command) {
 
     populate(process.env, parsed, { override: true });
 
-    if (process.env.DEBUG) console.log("set options", parsed);
+    if (process.env.TRACE) console.log("set options", parsed);
 }
 
 export function loadBranchName() {
-    if (process.env.DEBUG) console.log("loading branch...");
+    if (process.env.TRACE) console.log("loading branch...");
 
     // only load when not already defined
     if (process.env.Branch) {
-        if (process.env.DEBUG) console.log("skip branch cause its defined already", process.env.Branch);
+        if (process.env.TRACE) console.log("skip branch cause its defined already", process.env.Branch);
         return;
     }
 
@@ -86,5 +86,5 @@ export function loadBranchName() {
     const parsed = { Branch: branchName };
     populate(process.env, parsed);
 
-    if (process.env.DEBUG) console.log("set branch", parsed);
+    if (process.env.TRACE) console.log("set branch", parsed);
 }

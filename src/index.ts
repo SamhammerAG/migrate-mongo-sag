@@ -5,7 +5,8 @@ import { Command } from "commander";
 import pkgjson from "../package.json";
 import { initEnv } from "./env";
 import { deleteDb } from "./dropDatabase";
-import { initMigrations } from "./migrations";
+import { initCreateMigrations, initMigrations } from "./migrations";
+import { sep } from "path";
 
 const program = new Command();
 
@@ -16,24 +17,29 @@ program
     .option("-e, --env <env>", "set process.env.Environment")
     .option("-b, --brand <brand>", "set process.env.Brand")
     .option("-s, --suffix <suffix>", "set process.env.Suffix")
-    .option("-d, --debug", "enable debug output");
+    .option("-t, --trace", "set process.env.TRACE to enable trace ouputs");
 
 program.hook("preSubcommand", async (cmd) => {
-    process.env.DEBUG = cmd.getOptionValue("debug") ? "on" : "";
-    if (process.env.DEBUG) console.log("hook pre-command...");
+    process.env.TRACE = cmd.getOptionValue("trace") ? "on" : "";
+    if (process.env.TRACE) console.log("hook pre-command...");
     await initEnv(cmd);
 });
 
 program
     .command("create [description]")
-    .description("create a new database migration with the provided description")
-    .action(async (description) => {
-        if (process.env.DEBUG) console.log("run command create...");
+    .description(
+        "create a new database migration with the provided description" +
+            "\nif the brand is set, the migration will be placed in the brand folder, otherwise in the defaultMigration folder"
+    )
+    .option("-d, --default", "enforce creation in defaultMigration folder")
+    .action(async (description, args) => {
+        if (process.env.TRACE) console.log("run command create...");
 
         try {
-            const fileName = create(description);
+            await initCreateMigrations(args.default);
+            const fileName = await create(description);
             const configuration = await config.read();
-            console.log(`CREATED: ${configuration.migrationsDir}/${fileName}`);
+            console.log(`CREATED: ${configuration.migrationsDir}${sep}${fileName}`);
         } catch (error) {
             console.error(`ERROR: ${error.message}`, error.stack);
             process.exit(1);
@@ -44,7 +50,7 @@ program
     .command("up")
     .description("run all pending database migrations")
     .action(async () => {
-        if (process.env.DEBUG) console.log("run command up...");
+        if (process.env.TRACE) console.log("run command up...");
 
         const { db, client } = await database.connect();
 
@@ -65,7 +71,7 @@ program
     .command("down")
     .description("undo the last applied database migration")
     .action(async () => {
-        if (process.env.DEBUG) console.log("run command down...");
+        if (process.env.TRACE) console.log("run command down...");
 
         const { db, client } = await database.connect();
 
@@ -85,7 +91,7 @@ program
     .command("status")
     .description("print the changelog of the database")
     .action(async () => {
-        if (process.env.DEBUG) console.log("run command status...");
+        if (process.env.TRACE) console.log("run command status...");
 
         const { db, client } = await database.connect();
 
@@ -105,7 +111,7 @@ program
     .command("dropDatabase")
     .description("deletes the database")
     .action(async () => {
-        if (process.env.DEBUG) console.log("run command dropDatabase...");
+        if (process.env.TRACE) console.log("run command dropDatabase...");
 
         const { db, client } = await database.connect();
 
