@@ -5,6 +5,7 @@ import { Command } from "commander";
 import pkgjson from "../package.json";
 import { initEnv } from "./env";
 import { deleteDb } from "./dropDatabase";
+import { initMigrations } from "./migrations";
 
 const program = new Command();
 
@@ -48,6 +49,7 @@ program
         const { db, client } = await database.connect();
 
         try {
+            await initMigrations();
             const migrated = await up(db, client);
             migrated.forEach((fileName) => console.log(`MIGRATED UP: ${fileName}`));
         } catch (error) {
@@ -68,6 +70,7 @@ program
         const { db, client } = await database.connect();
 
         try {
+            await initMigrations();
             const migratedDown = await down(db, client);
             migratedDown.forEach((fileName) => console.log(`MIGRATED DOWN: ${fileName}`));
         } catch (error) {
@@ -87,6 +90,7 @@ program
         const { db, client } = await database.connect();
 
         try {
+            await initMigrations();
             const migrationStatus = await status(db);
             migrationStatus.forEach((item) => console.log(`${item.appliedAt}: ${item.fileName}`));
         } catch (error) {
