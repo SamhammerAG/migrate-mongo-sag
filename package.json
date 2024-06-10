@@ -1,7 +1,6 @@
 {
   "name": "@samhammer/migrate-mongo-sag",
   "version": "0.0.3",
-  "main": "dist/migrate-mongo.js",
   "bin": {
     "migrate-mongo": "dist/migrate-mongo.js"
   },
@@ -16,7 +15,7 @@
   "license": "MIT",
   "scripts": {
     "build": "vite build",
-    "migrate-mongo": "vite build && npx .",
+    "migrate-mongo": "vite build && node dist/migrate-mongo.js",
     "format": "prettier --write --parser typescript ./src",
     "lint": "eslint ./src",
     "test": "vitest run"
