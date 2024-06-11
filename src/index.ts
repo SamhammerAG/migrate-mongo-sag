@@ -27,10 +27,7 @@ program.hook("preSubcommand", async (cmd) => {
 
 program
     .command("create [description]")
-    .description(
-        "create a new database migration with the provided description" +
-            "\nif the brand is set, the migration will be placed in the brand folder, otherwise in the defaultMigration folder"
-    )
+    .description("create a new database migration with the provided description")
     .option("-d, --default", "enforce creation in defaultMigration folder")
     .action(async (description, args) => {
         if (process.env.TRACE) console.log("run command create...");

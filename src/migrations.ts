@@ -20,10 +20,11 @@ export async function initMigrations() {
 }
 
 export async function initCreateMigrations(defaultMigrations: boolean | undefined) {
-    if (!process.env.DefaultMigrations) throw new Error("enviroment variable DefaultMigrations is required");
+    if (defaultMigrations && !process.env.DefaultMigrations) throw new Error("enviroment variable DefaultMigrations is required");
+    if (!defaultMigrations && !process.env.Brand) throw new Error("enviroment variable Brand is required");
 
+    const subDir = defaultMigrations ? process.env.DefaultMigrations : process.env.Brand;
     const rootDir = await resolveMigrationsDirPath();
-    const subDir = defaultMigrations || !process.env.Brand ? process.env.DefaultMigrations : process.env.Brand;
     const migrationDir = path.join(rootDir, subDir);
 
     // config must be updated at last, cause resolveMigrationsDirPath must get rootDir from original config
