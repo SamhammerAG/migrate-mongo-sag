@@ -96,14 +96,7 @@ module.exports = {
         url: `${process.env.MongoDb__Url}`,
 
         // Change this to your database name
-        databaseName: "my-database",
-
-        // Set options for MongoDB client
-        options: {
-            // removes a deprecation warning when connecting
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        }
+        databaseName: "my-database"
     },
 
     // The migrations dir, can be an relative or absolute path. Only edit this when really necessary.
