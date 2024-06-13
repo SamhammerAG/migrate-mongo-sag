@@ -60,7 +60,7 @@ this should be used to define settings for all environments and secret keys
 
 ```
 #setup directory name for default migrations (mandatory)
-DefaultMigrations="default"
+DefaultMigrationsDir="default"
 
 #setup vault secret for user name + password (optional)
 MongoDbOptions__AdminUserName="VaultKey--kv-v2/data/mongodb/Username"

@@ -4,11 +4,11 @@ import { readdir, copyFile, rm } from "fs/promises";
 import { existsSync, mkdirSync } from "fs";
 
 export async function initMigrations() {
-    if (!process.env.DefaultMigrations) throw new Error("enviroment variable DefaultMigrations is required");
+    if (!process.env.DefaultMigrationsDir) throw new Error("enviroment variable DefaultMigrationsDir is required");
     if (!process.env.Brand) throw new Error("enviroment variable Brand is required");
 
     const rootDir = await resolveMigrationsDirPath();
-    const defaultDir = path.join(rootDir, process.env.DefaultMigrations);
+    const defaultDir = path.join(rootDir, process.env.DefaultMigrationsDir);
     const brandDir = path.join(rootDir, process.env.Brand);
 
     const tempDir = await initTempDir();
@@ -19,11 +19,11 @@ export async function initMigrations() {
     await updateConfig(tempDir);
 }
 
-export async function initCreateMigrations(defaultMigrations: boolean | undefined) {
-    if (defaultMigrations && !process.env.DefaultMigrations) throw new Error("enviroment variable DefaultMigrations is required");
-    if (!defaultMigrations && !process.env.Brand) throw new Error("enviroment variable Brand is required");
+export async function initCreateMigrations(useDefaultMigrations: boolean | undefined) {
+    if (useDefaultMigrations && !process.env.DefaultMigrationsDir) throw new Error("enviroment variable DefaultMigrationsDir is required");
+    if (!useDefaultMigrations && !process.env.Brand) throw new Error("enviroment variable Brand is required");
 
-    const subDir = defaultMigrations ? process.env.DefaultMigrations : process.env.Brand;
+    const subDir = useDefaultMigrations ? process.env.DefaultMigrationsDir : process.env.Brand;
     const rootDir = await resolveMigrationsDirPath();
     const migrationDir = path.join(rootDir, subDir);
 
