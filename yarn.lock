@@ -1032,7 +1032,7 @@ __metadata:
   resolution: "@samhammer/migrate-mongo-sag@workspace:."
   dependencies:
     "@rushstack/eslint-patch": "npm:^1.10.3"
-    "@samhammer/vault-client-sag": "npm:^1.1.0"
+    "@samhammer/vault-client-sag": "npm:^1.1.1"
     "@types/lodash": "npm:^4.17.5"
     "@types/migrate-mongo": "npm:^8.2.0"
     "@types/node": "npm:^18.19.34"
@@ -1059,13 +1059,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@samhammer/vault-client-sag@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "@samhammer/vault-client-sag@npm:1.1.0"
+"@samhammer/vault-client-sag@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@samhammer/vault-client-sag@npm:1.1.1"
   dependencies:
     fs-extra: "npm:^11.1.1"
     hashi-vault-js: "npm:^0.4.13"
-  checksum: 067cc4c8c36f3fee62b183e353298de66a91b82c037f14ccdba00ec1ef8971bcf6d646ba5b2b50c9fad3c56efd9d5ee1a58265e9e266fa13652b86380d69ea00
+  checksum: fe917944d078c90b690ed9e2ac132fd23bdde75acf796423bab08d6fcb361185c1896621b02b0a84db388a723e6a008d424e3c629a047c8d0510e32d7be5ac54
   languageName: node
   linkType: hard
 
@@ -1980,7 +1980,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.5.0":
+"axios@npm:^1.7.0":
   version: 1.7.2
   resolution: "axios@npm:1.7.2"
   dependencies:
@@ -3286,11 +3286,11 @@ __metadata:
   linkType: hard
 
 "hashi-vault-js@npm:^0.4.13":
-  version: 0.4.14
-  resolution: "hashi-vault-js@npm:0.4.14"
+  version: 0.4.15
+  resolution: "hashi-vault-js@npm:0.4.15"
   dependencies:
-    axios: "npm:^1.5.0"
-  checksum: 3bf9232a260bcb535e44abb57cb8f983ff5a9c6a0a9de08fb5889f1c1d49978679c5a2cfd22b6c8da4ae0504b2b0eeda4541be3d3a949db6037af8edb4f8d2fa
+    axios: "npm:^1.7.0"
+  checksum: 550fda75d3e16f92906e29aae55c86a8553d004d37b89ecf3cb1501ffae04a845bc5d540673742284ebb8a3d71172dd67e26a81670bb0a37d57082a4a4cf288c
   languageName: node
   linkType: hard
 
