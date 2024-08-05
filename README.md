@@ -6,7 +6,7 @@ it provides some additional functionality to the original migrate-mongo https://
 this tool additionally supports:
 
 -   execution of migration-scripts for "brand" and "default" (will be merged)
--   new options to set "brand", "env" and "suffix" as environment variables
+-   new options to set "brand", "env" and "app" as environment variables
 -   new command "dropDatabase" to delete the configured database
 -   load settings from .env files by https://github.com/motdotla/dotenv
 -   load vault secrets defined in .env files https://github.com/SamhammerAG/vault-client-sag
@@ -32,7 +32,7 @@ Options:
   -V, --version                   output the version number
   -e, --env <env>                 set process.env.Environment
   -b, --brand <brand>             set process.env.Brand
-  -s, --suffix <suffix>           set process.env.Suffix
+  -a, --app <app>                 set process.env.App
   -t, --trace                     set process.env.TRACE to enable trace outputs
   -h, --help                      display help for command
 

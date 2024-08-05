@@ -16,7 +16,7 @@ program
     .version(pkgjson.version)
     .option("-e, --env <env>", "set process.env.Environment")
     .option("-b, --brand <brand>", "set process.env.Brand")
-    .option("-s, --suffix <suffix>", "set process.env.Suffix")
+    .option("-a, --app <app>", "set process.env.App")
     .option("-t, --trace", "set process.env.TRACE to enable trace outputs");
 
 program.hook("preSubcommand", async (cmd) => {
