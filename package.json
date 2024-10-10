@@ -1,6 +1,6 @@
 {
   "name": "@samhammer/migrate-mongo-sag",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "bin": {
     "migrate-mongo": "dist/migrate-mongo.js"
   },
@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@elastic/ecs-winston-format": "^1.5.3",
+    "@elastic/elasticsearch": "7.17",
     "@samhammer/vault-client-sag": "^1.1.1",
     "commander": "^12.1.0",
     "dotenv": "^16.4.5",

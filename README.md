@@ -81,6 +81,12 @@ MongoDbOptions__DatabaseHost="localhost:27017"
 #setup defaults for environment and brand; can still be overwritten by cli with "--env" and "--brand" (optional)
 Environment=dev
 Brand=myBrand
+
+#setup elastic logs for processes
+Logger_ClientUrl=<elastic log url. Unset if no use>
+Logger_ClientUsername=<username>
+Logger_ClientPassword=<password>
+Logger_ClientIndex=<expected index>
 ```
 
 #### sample migrate-mongo.config.js

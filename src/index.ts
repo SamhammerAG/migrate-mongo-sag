@@ -8,8 +8,12 @@ import { deleteDb } from "./dropDatabase";
 import { initCreateMigrations, initMigrations } from "./migrations";
 import { sep } from "path";
 import { initLogger } from "./logger";
+import type { Logger } from "winston";
+import ElasticClient from "./elasticClient";
 
 const program = new Command();
+let logger: Logger;
+let elasticClient: ElasticClient;
 
 program
     .name("migrate-mongo")
@@ -24,6 +28,8 @@ program.hook("preSubcommand", async (cmd) => {
     process.env.TRACE = cmd.getOptionValue("trace") ? "on" : "";
     if (process.env.TRACE) console.log("hook pre-command...");
     await initEnv(cmd);
+    logger = initLogger();
+    elasticClient = new ElasticClient();
 });
 
 program
@@ -31,7 +37,6 @@ program
     .description("create a new database migration with the provided description")
     .option("-d, --default", "enforce creation in defaultMigration folder")
     .action(async (description, args) => {
-        const logger = initLogger();
         if (process.env.TRACE) logger.info("run command create...");
 
         try {
@@ -41,6 +46,7 @@ program
             logger.info(`CREATED: ${configuration.migrationsDir}${sep}${fileName}`);
         } catch (error) {
             logger.error(`ERROR: ${error.message}`, error.stack);
+            await elasticClient.syncLogValues();
             process.exit(1);
         }
     });
@@ -49,7 +55,6 @@ program
     .command("up")
     .description("run all pending database migrations")
     .action(async () => {
-        const logger = initLogger();
         if (process.env.TRACE) logger.info("run command up...");
 
         const { db, client } = await database.connect();
@@ -62,9 +67,10 @@ program
         } catch (error) {
             logger.error(`ERROR: ${error.message}`, error.stack);
             error.migrated.forEach((fileName) => logger.error(`MIGRATED UP: ${fileName}`));
-            process.exit(1);
         } finally {
+            await elasticClient.syncLogValues();
             await client.close();
+            process.exit(1);
         }
     });
 
@@ -72,7 +78,6 @@ program
     .command("down")
     .description("undo the last applied database migration")
     .action(async () => {
-        const logger = initLogger();
         if (process.env.TRACE) logger.info("run command down...");
 
         const { db, client } = await database.connect();
@@ -85,6 +90,7 @@ program
             logger.error(`ERROR: ${error.message}`, error.stack);
             process.exit(1);
         } finally {
+            await elasticClient.syncLogValues();
             await client.close();
         }
     });
@@ -93,7 +99,6 @@ program
     .command("status")
     .description("print the changelog of the database")
     .action(async () => {
-        const logger = initLogger();
         if (process.env.TRACE) logger.info("run command status...");
 
         const { db, client } = await database.connect();
@@ -106,6 +111,7 @@ program
             logger.error(`ERROR: ${error.message}`, error.stack);
             process.exit(1);
         } finally {
+            await elasticClient.syncLogValues();
             await client.close();
         }
     });
@@ -114,7 +120,6 @@ program
     .command("dropDatabase")
     .description("deletes the database")
     .action(async () => {
-        const logger = initLogger();
         if (process.env.TRACE) logger.info("run command dropDatabase...");
 
         const { db, client } = await database.connect();
@@ -124,9 +129,10 @@ program
             logger.info(`DROPPED DB:`, deleteStatus.databaseName, deleteStatus.userName);
         } catch (error) {
             logger.error(`ERROR: ${error.message}`, error.stack);
-            process.exit(1);
         } finally {
+            await elasticClient.syncLogValues();
             await client.close();
+            process.exit(1);
         }
     });
 

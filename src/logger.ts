@@ -3,18 +3,13 @@ import winston from "winston";
 
 export function initLogger() {
     const defaultLogLevel = "info";
-    const defaultLogFilePath = "logs/log.json";
+    const consoleLog = new winston.transports.Console();
+    const fileLog = new winston.transports.File({ filename: process.env.Logger_LogFile });
 
     const logger = winston.createLogger({
         level: process.env.Logger_LogLevel || defaultLogLevel,
         format: ecsFormat({ convertReqRes: true }),
-        transports: [
-            new winston.transports.Console(),
-            new winston.transports.File({
-                filename: process.env.Logger_LogFile || defaultLogFilePath,
-                level: process.env.Logger_LogLevel
-            })
-        ]
+        transports: [consoleLog, fileLog]
     });
 
     return logger;
