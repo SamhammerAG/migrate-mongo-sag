@@ -82,7 +82,9 @@ MongoDbOptions__DatabaseHost="localhost:27017"
 Environment=dev
 Brand=myBrand
 
-#setup elastic logs for processes
+#setup logs for processes
+Logger_LogFile=<Log file path, default is logs/log.json>
+Logger_LogLevel=<Log level default is "info">
 Logger_ClientUrl=<elastic log url. Unset if no use>
 Logger_ClientUsername=<username>
 Logger_ClientPassword=<password>
