@@ -38,6 +38,7 @@ program
     .option("-d, --default", "enforce creation in defaultMigration folder")
     .action(async (description, args) => {
         if (process.env.TRACE) logger.info("run command create...");
+        let hasError = 0;
 
         try {
             await initCreateMigrations(args.default);
@@ -46,8 +47,10 @@ program
             logger.info(`CREATED: ${configuration.migrationsDir}${sep}${fileName}`);
         } catch (error) {
             logger.error(`ERROR: ${error.message}`, error.stack);
+            hasError = 1;
+        } finally {
             await elasticClient.syncLogValues();
-            process.exit(1);
+            process.exit(hasError);
         }
     });
 
@@ -58,6 +61,7 @@ program
         if (process.env.TRACE) logger.info("run command up...");
 
         const { db, client } = await database.connect();
+        let hasError = 0;
 
         try {
             await initMigrations();
@@ -67,10 +71,11 @@ program
         } catch (error) {
             logger.error(`ERROR: ${error.message}`, error.stack);
             error.migrated.forEach((fileName) => logger.error(`MIGRATED UP: ${fileName}`));
+            hasError = 1;
         } finally {
             await elasticClient.syncLogValues();
             await client.close();
-            process.exit(1);
+            process.exit(hasError);
         }
     });
 
@@ -81,6 +86,7 @@ program
         if (process.env.TRACE) logger.info("run command down...");
 
         const { db, client } = await database.connect();
+        let hasError = 0;
 
         try {
             await initMigrations();
@@ -88,10 +94,11 @@ program
             migratedDown.forEach((fileName) => logger.info(`MIGRATED DOWN: ${fileName}`));
         } catch (error) {
             logger.error(`ERROR: ${error.message}`, error.stack);
-            process.exit(1);
+            hasError = 1;
         } finally {
             await elasticClient.syncLogValues();
             await client.close();
+            process.exit(hasError);
         }
     });
 
@@ -101,6 +108,7 @@ program
     .action(async () => {
         if (process.env.TRACE) logger.info("run command status...");
 
+        let hasError = 0;
         const { db, client } = await database.connect();
 
         try {
@@ -109,10 +117,11 @@ program
             migrationStatus.forEach((item) => logger.info(`${item.appliedAt}: ${item.fileName}`));
         } catch (error) {
             logger.error(`ERROR: ${error.message}`, error.stack);
-            process.exit(1);
+            hasError = 1;
         } finally {
             await elasticClient.syncLogValues();
             await client.close();
+            process.exit(hasError);
         }
     });
 
@@ -122,6 +131,7 @@ program
     .action(async () => {
         if (process.env.TRACE) logger.info("run command dropDatabase...");
 
+        let hasError = 0;
         const { db, client } = await database.connect();
 
         try {
@@ -129,10 +139,11 @@ program
             logger.info(`DROPPED DB:`, deleteStatus.databaseName, deleteStatus.userName);
         } catch (error) {
             logger.error(`ERROR: ${error.message}`, error.stack);
+            hasError = 1;
         } finally {
             await elasticClient.syncLogValues();
             await client.close();
-            process.exit(1);
+            process.exit(hasError);
         }
     });
 
