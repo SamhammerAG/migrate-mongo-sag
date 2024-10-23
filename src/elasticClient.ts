@@ -1,5 +1,6 @@
 import { Client } from "@elastic/elasticsearch";
 import fs from "fs";
+import moment from "moment";
 import readline from "readline";
 
 export default class ElasticClient {
@@ -21,9 +22,15 @@ export default class ElasticClient {
             logs.push(JSON.parse(line));
         }
 
-        const body = logs.flatMap((log) => [{ index: { _index: process.env.Logger_ClientIndex } }, log]);
+        const indexName = `${process.env.Logger_ClientIndex}-${getIndexSuffix()}`;
+        const body = logs.flatMap((log) => [{ index: { _index: indexName } }, log]);
         await this.client.bulk({ body });
     }
+}
+
+function getIndexSuffix() {
+    const today = moment(Date.now());
+    return `${today.year()}.${today.week()}`;
 }
 
 function initElasticClient() {
