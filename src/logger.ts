@@ -1,5 +1,6 @@
 import ecsFormat from "@elastic/ecs-winston-format";
 import winston, { format } from "winston";
+import { name, version } from "../package.json";
 
 export function initLogger() {
     const consoleLog = new winston.transports.Console({
@@ -12,8 +13,10 @@ export function initLogger() {
             ...info,
             fields: {
                 Brand: process.env.Brand,
-                Environment: process.env.Environment,
-                Branch: process.env.Branch
+                EnvironmentName: process.env.Environment,
+                BranchName: process.env.Branch,
+                AssemblyName: name,
+                AssemblyVersion: version
             }
         };
     })();
