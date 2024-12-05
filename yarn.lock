@@ -1081,7 +1081,7 @@ __metadata:
     "@elastic/ecs-winston-format": "npm:^1.5.3"
     "@elastic/elasticsearch": "npm:7.17"
     "@rushstack/eslint-patch": "npm:^1.10.3"
-    "@samhammer/vault-client-sag": "npm:^1.1.1"
+    "@samhammer/vault-client-sag": "npm:^1.2.0"
     "@types/lodash": "npm:^4.17.5"
     "@types/migrate-mongo": "npm:^8.2.0"
     "@types/node": "npm:^18.19.34"
@@ -1110,13 +1110,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@samhammer/vault-client-sag@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "@samhammer/vault-client-sag@npm:1.1.1"
+"@samhammer/vault-client-sag@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@samhammer/vault-client-sag@npm:1.2.0"
   dependencies:
     fs-extra: "npm:^11.1.1"
-    hashi-vault-js: "npm:^0.4.13"
-  checksum: fe917944d078c90b690ed9e2ac132fd23bdde75acf796423bab08d6fcb361185c1896621b02b0a84db388a723e6a008d424e3c629a047c8d0510e32d7be5ac54
+    hashi-vault-js: "npm:^0.4.16"
+  checksum: 309433c921ec905f60f0ad607ca3e1353f0bdb64d01a23fd98470e04a01e8681f23b7d68a25aeb740ad6286134514d8fb38d16ebf5796a5b857d2c648699a302
   languageName: node
   linkType: hard
 
@@ -3489,12 +3489,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hashi-vault-js@npm:^0.4.13":
-  version: 0.4.15
-  resolution: "hashi-vault-js@npm:0.4.15"
+"hashi-vault-js@npm:^0.4.16":
+  version: 0.4.16
+  resolution: "hashi-vault-js@npm:0.4.16"
   dependencies:
     axios: "npm:^1.7.0"
-  checksum: 550fda75d3e16f92906e29aae55c86a8553d004d37b89ecf3cb1501ffae04a845bc5d540673742284ebb8a3d71172dd67e26a81670bb0a37d57082a4a4cf288c
+  checksum: 6b05d1052829c9d83f4bb7125a747c33bc631ff46f9cb922ab39ecf7a70220445ec07a567b9d4efdd0283f03b6a44e0f3531d2e02ad1b478cb8115bb5569fb84
   languageName: node
   linkType: hard
 
