@@ -1,6 +1,6 @@
 {
   "name": "@samhammer/migrate-mongo-sag",
-  "version": "1.14.0",
+  "version": "0.0.0",
   "bin": {
     "migrate-mongo": "dist/migrate-mongo.js"
   },

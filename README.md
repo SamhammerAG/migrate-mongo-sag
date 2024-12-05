@@ -124,3 +124,9 @@ module.exports = {
     moduleSystem: "commonjs"
 };
 ```
+
+## How to publish
+
+-   Create & Push a tag with new version number
+-   The CICD actions will take this version number for npm package automatically
+-   Check github action to validated, that package was released to npm registry.
