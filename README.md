@@ -14,7 +14,7 @@ this tool additionally supports:
 ## Requirements
 
 -   yarn 4.x
--   node 18.x
+-   node 24.x
 
 ## Installation
 
