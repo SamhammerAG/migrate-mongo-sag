@@ -6,6 +6,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "ignoreDeprecations": "6.0",
     "useDefineForClassFields": true,
     "jsx": "preserve",
     "noImplicitThis": true,

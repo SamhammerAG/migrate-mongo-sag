@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 8
+  version: 9
   cacheKey: 10c0
 
 "@aws-crypto/sha256-browser@npm:5.2.0":
@@ -1212,6 +1212,9 @@ __metadata:
     winston: "npm:^3.14.2"
   peerDependencies:
     mongodb: ^4.4.1 || ^5.0.0 || ^6.0.0
+  dependenciesMeta:
+    esbuild:
+      built: true
   bin:
     migrate-mongo: dist/migrate-mongo.js
   languageName: unknown
