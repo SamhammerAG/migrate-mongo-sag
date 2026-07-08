@@ -1,6 +1,6 @@
 import { Client } from "@elastic/elasticsearch";
+import { format } from "date-fns";
 import fs from "fs";
-import moment from "moment";
 import readline from "readline";
 
 export default class ElasticClient {
@@ -28,9 +28,9 @@ export default class ElasticClient {
     }
 }
 
-function getIndexSuffix() {
-    const today = moment(Date.now());
-    return `${today.year()}.${today.week()}`;
+export function getIndexSuffix() {
+    // ISO 8601 week-date: RRRR = ISO week-year, I = ISO week (un-padded), e.g. "2026.1".
+    return format(new Date(), "RRRR.I");
 }
 
 function initElasticClient() {

@@ -43,11 +43,11 @@
     "@elastic/elasticsearch": "~7.17.14",
     "@samhammer/vault-client-sag": "^1.5.0",
     "commander": "^12.1.0",
+    "date-fns": "^4.4.0",
     "dotenv": "^16.6.1",
     "dotenv-expand": "^11.0.7",
     "lodash": "^4.18.1",
     "migrate-mongo": "^11.0.0",
-    "moment": "^2.30.1",
     "winston": "^3.19.0"
   },
   "peerDependencies": {
