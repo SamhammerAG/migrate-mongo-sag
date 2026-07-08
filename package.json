@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.10.3",
-    "@types/lodash": "^4.17.23",
+    "@types/lodash": "^4.17.24",
     "@types/migrate-mongo": "^8.2.0",
     "@types/node": "^24.10.4",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
@@ -40,15 +40,15 @@
   },
   "dependencies": {
     "@elastic/ecs-winston-format": "^1.5.3",
-    "@elastic/elasticsearch": "7.17",
-    "@samhammer/vault-client-sag": "^1.3.0",
+    "@elastic/elasticsearch": "~7.17.14",
+    "@samhammer/vault-client-sag": "^1.5.0",
     "commander": "^12.1.0",
-    "dotenv": "^16.4.5",
-    "dotenv-expand": "^11.0.6",
-    "lodash": "^4.17.23",
+    "dotenv": "^16.6.1",
+    "dotenv-expand": "^11.0.7",
+    "lodash": "^4.18.1",
     "migrate-mongo": "^11.0.0",
     "moment": "^2.30.1",
-    "winston": "^3.14.2"
+    "winston": "^3.19.0"
   },
   "peerDependencies": {
     "mongodb": "^4.4.1 || ^5.0.0 || ^6.0.0"
