@@ -23,9 +23,9 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.10.3",
-    "@types/lodash": "^4.17.23",
+    "@types/lodash": "^4.17.24",
     "@types/migrate-mongo": "^8.2.0",
-    "@types/node": "^24.10.4",
+    "@types/node": "^24.13.2",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
     "eslint": "^8.57.0",
@@ -35,31 +35,26 @@
     "mongodb": "^4.17.2",
     "prettier": "^3.3.2",
     "typescript": "^5.4.5",
-    "vite": "^6.4.1",
-    "vitest": "~3.1.4"
+    "vite": "^6.4.3",
+    "vitest": "~4.1.9"
   },
   "dependencies": {
     "@elastic/ecs-winston-format": "^1.5.3",
-    "@elastic/elasticsearch": "7.17",
-    "@samhammer/vault-client-sag": "^1.3.0",
+    "@elastic/elasticsearch": "~7.17.14",
+    "@samhammer/vault-client-sag": "^1.5.0",
     "commander": "^12.1.0",
-    "dotenv": "^16.4.5",
-    "dotenv-expand": "^11.0.6",
-    "lodash": "^4.17.23",
+    "date-fns": "^4.4.0",
+    "dotenv": "^16.6.1",
+    "dotenv-expand": "^11.0.7",
+    "lodash": "^4.18.1",
     "migrate-mongo": "^11.0.0",
-    "moment": "^2.30.1",
-    "winston": "^3.14.2"
+    "winston": "^3.19.0"
   },
   "peerDependencies": {
     "mongodb": "^4.4.1 || ^5.0.0 || ^6.0.0"
   },
-  "dependenciesMeta": {
-    "esbuild": {
-      "built": true
-    }
-  },
   "volta": {
-    "node": "24.15.0",
-    "yarn": "4.14.1"
+    "node": "24.18.0",
+    "yarn": "4.17.0"
   }
 }
