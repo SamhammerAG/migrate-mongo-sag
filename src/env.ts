@@ -8,6 +8,12 @@ import type { Command } from "commander";
 // define files to load
 const path = [".env.local", ".env"];
 
+// the sentinel a value must start with to be treated as a VaultKey reference
+const vaultKeyPrefix = "VaultKey--";
+
+// only environment variables under these name prefixes are scanned for VaultKey references; so unrelated/system variables are never read
+const vaultKeyEnvPrefixes = ["Logger_", "MongoDbOptions__", "MongoDb__"];
+
 export async function initEnv(cmd: Command) {
     try {
         if (process.env.TRACE) console.log("int env...");
@@ -47,7 +53,15 @@ export function getVaultKeys(path: string[]) {
     // load env for vault to temporary env; otherwise placeholders that target a field with VaultKey would be replaced before VaultValues are loaded
     const tempEnv = clone(process.env);
     const vaultEnv = config({ path, processEnv: tempEnv });
-    const vaultValues = pickBy(vaultEnv.parsed, (value) => value.startsWith("VaultKey"));
+
+    const isValueVaultKey = (value: string | undefined) => typeof value === "string" && value.startsWith(vaultKeyPrefix);
+    const isEnvPrefixAllowed = (key: string) => vaultKeyEnvPrefixes.some((prefix) => key.startsWith(prefix));
+
+    // collect VaultKey references from .env files and from process.env (env takes priority).
+    const fileVaultValues = pickBy(vaultEnv.parsed, (value) => isValueVaultKey(value));
+    const envVaultValues = pickBy(process.env, (value, key) => isEnvPrefixAllowed(key) && isValueVaultKey(value));
+    const vaultValues = { ...fileVaultValues, ...envVaultValues };
+
     const vaultEnvExpanded = expand({ parsed: vaultValues, processEnv: tempEnv });
 
     return invert(vaultEnvExpanded.parsed);

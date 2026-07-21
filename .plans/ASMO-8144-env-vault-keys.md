@@ -16,34 +16,35 @@ allowlist of name prefixes rather than the entire process environment.
 
 ## Acceptance criteria
 
-- [ ] `getVaultKeys` detects `VaultKey` references that are supplied via `process.env`
+- [x] `getVaultKeys` detects `VaultKey` references that are supplied via `process.env`
       (not only via `.env` files).
-- [ ] Only `process.env` entries whose **name** matches an explicit prefix allowlist are
+- [x] Only `process.env` entries whose **name** matches an explicit prefix allowlist are
       considered; unrelated/system variables are never read.
-- [ ] When the same key is defined in both `process.env` and an `.env` file, the value from
+- [x] When the same key is defined in both `process.env` and an `.env` file, the value from
       `process.env` wins.
-- [ ] Placeholder expansion (e.g. `$Env`) keeps working for both sources.
-- [ ] The function still does not leak or write non-Vault `.env` values into `process.env`
+- [x] Placeholder expansion (e.g. `$Env`) keeps working for both sources.
+- [x] The function still does not leak or write non-Vault `.env` values into `process.env`
       (the existing "values are not added to process.env" guarantee is preserved).
-- [ ] A documented decision on the allowlist approach is captured (see Technical details).
-- [ ] Automated tests are written that prove env variables are resolved and take priority
+- [x] A documented decision on the allowlist approach is captured (see Technical details).
+- [x] Automated tests are written that prove env variables are resolved and take priority
       over the `.env` file.
 
 ## Technical details
 
 ### Change in `src/env.ts` (`getVaultKeys`)
 
-- Introduce an explicit, named prefix allowlist near the top of the module, e.g.:
+- Introduce named constants near the top of the module:
 
   ```ts
+  const vaultKeyPrefix = "VaultKey--";
   const vaultKeyEnvPrefixes = ["Logger_", "MongoDbOptions__", "MongoDb__"];
   ```
 
 - Keep the current file-based detection: parse the files into a temp env and take the
-  `VaultKey`-prefixed entries from `.parsed`.
+  `VaultKey--`-prefixed entries from `.parsed`.
 - Additionally pick entries from `process.env` that pass **two gates**:
   1. the variable **name** starts with one of `vaultKeyEnvPrefixes`, and
-  2. the variable **value** starts with the `VaultKey` sentinel.
+  2. the variable **value** starts with the `vaultKeyPrefix` sentinel.
   Filter by name first so values of non-matching (system/unrelated) variables are never read.
 - Merge the two maps so that **`process.env` overrides the file values** (e.g.
   `{ ...fileVaultValues, ...envVaultValues }`).
@@ -53,16 +54,18 @@ allowlist of name prefixes rather than the entire process environment.
 
 ### Security / design decision: prefix allowlist + value sentinel (two gates)
 
-We limit env scanning to an explicit name-prefix allowlist combined with the existing
-`VaultKey` value sentinel, rather than scanning the whole environment.
+We limit env scanning to an explicit name-prefix allowlist combined with the
+`VaultKey--` value sentinel, rather than scanning the whole environment.
 
 - **Name-prefix allowlist first**: only variables under the app's own config namespaces
   (`Logger_`, `MongoDbOptions__`, `MongoDb__`) are inspected. Values of system/unrelated
   variables (PATH, tokens, CI vars) are never read. This addresses the concern about touching
   every environment variable and any perceived cost/risk of doing so.
-- **Value sentinel second**: among allowlisted names, only values starting with `VaultKey`
+- **Value sentinel second**: among allowlisted names, only values starting with `VaultKey--`
   become Vault lookups. Unused variables under the same prefix that are plain values (e.g.
-  spare `MongoDbOptions__*` not used by this project) are ignored.
+  spare `MongoDbOptions__*` not used by this project) are ignored. The full `VaultKey--` form
+  (not just `VaultKey`) is required deliberately: it matches the vault client's `parseVaultKey`
+  regex, so a value that cannot actually be resolved is never sent to Vault.
 - **No leakage path**: we never log or emit the environment; only resolved key *names* are
   TRACE-logged, never values.
 - **Extensibility**: adding a new namespaced variable requires no code change; adding a new
