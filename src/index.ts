@@ -27,9 +27,23 @@ program
 program.hook("preSubcommand", async (cmd) => {
     process.env.TRACE = cmd.getOptionValue("trace") ? "on" : "";
     if (process.env.TRACE) console.log("hook pre-command...");
-    await initEnv(cmd);
-    logger = initLogger();
-    elasticClient = new ElasticClient();
+
+    try {
+        await initEnv(cmd);
+    } catch (error) {
+        // env init (e.g. vault) failed; abort cleanly instead of running the command with broken config
+        console.error("init env failed", error);
+        process.exit(1);
+    }
+
+    try {
+        logger = initLogger();
+        elasticClient = new ElasticClient();
+    } catch (error) {
+        // without a logger the commands cannot run; abort cleanly instead of crashing with an unhandled rejection
+        console.error("init logger failed", error);
+        process.exit(1);
+    }
 });
 
 program

@@ -15,18 +15,14 @@ const vaultKeyPrefix = "VaultKey--";
 const vaultKeyEnvPrefixes = ["Logger_", "MongoDbOptions__", "MongoDb__"];
 
 export async function initEnv(cmd: Command) {
-    try {
-        if (process.env.TRACE) console.log("int env...");
+    if (process.env.TRACE) console.log("int env...");
 
-        await loadCommand(cmd);
-        await loadBranchName();
-        await loadVault();
-        await loadEnvFiles();
+    await loadCommand(cmd);
+    await loadBranchName();
+    await loadVault();
+    await loadEnvFiles();
 
-        if (process.env.TRACE) console.log("finished init env");
-    } catch (error) {
-        console.error(`init env failed`, error);
-    }
+    if (process.env.TRACE) console.log("finished init env");
 }
 
 export function loadEnvFiles() {
