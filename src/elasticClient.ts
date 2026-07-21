@@ -2,6 +2,7 @@ import { Client } from "@elastic/elasticsearch";
 import { format } from "date-fns";
 import fs from "fs";
 import readline from "readline";
+import { getLogFile } from "./logger";
 
 export default class ElasticClient {
     private client = initElasticClient();
@@ -11,7 +12,7 @@ export default class ElasticClient {
             return;
         }
 
-        const fileStream = fs.createReadStream(process.env.Logger_LogFile);
+        const fileStream = fs.createReadStream(getLogFile());
         const lines = readline.createInterface({
             input: fileStream,
             crlfDelay: Infinity

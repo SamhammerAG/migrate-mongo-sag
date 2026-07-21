@@ -22,7 +22,6 @@ export async function initEnv(cmd: Command) {
         await loadBranchName();
         await loadVault();
         await loadEnvFiles();
-        loadLogValues();
 
         if (process.env.TRACE) console.log("finished init env");
     } catch (error) {
@@ -102,16 +101,4 @@ export function loadBranchName() {
     populate(process.env, parsed);
 
     if (process.env.TRACE) console.log("set branch", parsed);
-}
-
-export function loadLogValues() {
-    const defaultLogLevel = "info";
-    const defaultLogFile = "logs/log.json";
-
-    const defaultLogValues = {
-        Logger_LogFile: process.env.Logger_LogFile || defaultLogFile,
-        Logger_LogLevel: process.env.Logger_LogLevel || defaultLogLevel
-    };
-
-    populate(process.env, defaultLogValues);
 }
