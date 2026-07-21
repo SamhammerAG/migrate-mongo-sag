@@ -150,7 +150,7 @@ program
 
         try {
             const deleteStatus = await deleteDb(db);
-            logger.info(`DROPPED DB:`, deleteStatus.databaseName, deleteStatus.userName);
+            logger.info(`DROPPED DB: ${deleteStatus.databaseName}, user: ${deleteStatus.userName}`);
         } catch (error) {
             logger.error(`ERROR: ${error.message}`, error.stack);
             hasError = 1;
