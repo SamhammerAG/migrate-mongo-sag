@@ -9,7 +9,7 @@ this tool additionally supports:
 -   new options to set "brand", "env" and "app" as environment variables
 -   new command "dropDatabase" to delete the configured database
 -   load settings from .env files by https://github.com/motdotla/dotenv
--   load vault secrets defined in .env files https://github.com/SamhammerAG/vault-client-sag
+-   load vault secrets defined in .env files or environment variables https://github.com/SamhammerAG/vault-client-sag
 
 ## Requirements
 
@@ -89,6 +89,26 @@ Logger_ClientUrl=<elastic log url. Unset if no use>
 Logger_ClientUsername=<username>
 Logger_ClientPassword=<password>
 Logger_ClientIndex=<expected index>
+```
+
+#### override settings via environment variables
+
+any setting can also be defined as a real environment variable instead of (or in addition to) an
+.env file. Environment variables always take **priority** over values from .env files, which makes
+this useful for temporarily overriding a vault key or setting for a single run, e.g. in a pipeline
+or a local shell, without editing files.
+
+for the vault-key detection (`VaultKey--...`), only variable names under the following prefixes
+are scanned, so unrelated/system environment variables are never read:
+
+-   `Logger_`
+-   `MongoDbOptions__`
+-   `MongoDb__`
+
+```powershell
+# override a vault key for a single run (PowerShell)
+$env:MongoDbOptions__AdminPassword = "VaultKey--kv-v2/data/mongodb/prod/Password"
+yarn migrate-mongo status
 ```
 
 #### sample migrate-mongo.config.js
