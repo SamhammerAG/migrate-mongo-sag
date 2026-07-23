@@ -2,6 +2,9 @@ import ecsFormat from "@elastic/ecs-winston-format";
 import winston, { format } from "winston";
 import { name, version } from "../package.json";
 
+export const defaultLogFile = "logs/log.json";
+export const defaultLogLevel = "info";
+
 export function initLogger() {
     const consoleLog = new winston.transports.Console({
         format: format.simple()
@@ -22,14 +25,24 @@ export function initLogger() {
     })();
 
     const fileLog = new winston.transports.File({
-        filename: process.env.Logger_LogFile,
+        filename: getLogFile(),
         format: format.combine(fieldsFormat, ecsJsonFormat)
     });
 
     const logger = winston.createLogger({
-        level: process.env.Logger_LogLevel,
+        level: getLogLevel(),
         transports: [consoleLog, fileLog]
     });
 
     return logger;
+}
+
+// resolve log config with defaults so logging works even when env init did not complete;
+// getLogFile is shared with the elastic sync so both read the same file
+export function getLogFile() {
+    return process.env.Logger_LogFile || defaultLogFile;
+}
+
+export function getLogLevel() {
+    return process.env.Logger_LogLevel || defaultLogLevel;
 }

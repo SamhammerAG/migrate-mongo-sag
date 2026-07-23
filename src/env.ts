@@ -8,20 +8,21 @@ import type { Command } from "commander";
 // define files to load
 const path = [".env.local", ".env"];
 
+// the sentinel a value must start with to be treated as a VaultKey reference
+const vaultKeyPrefix = "VaultKey--";
+
+// only environment variables under these name prefixes are scanned for VaultKey references; so unrelated/system variables are never read
+const vaultKeyEnvPrefixes = ["Logger_", "MongoDbOptions__", "MongoDb__"];
+
 export async function initEnv(cmd: Command) {
-    try {
-        if (process.env.TRACE) console.log("int env...");
+    if (process.env.TRACE) console.log("int env...");
 
-        await loadCommand(cmd);
-        await loadBranchName();
-        await loadVault();
-        await loadEnvFiles();
-        loadLogValues();
+    await loadCommand(cmd);
+    await loadBranchName();
+    await loadVault();
+    await loadEnvFiles();
 
-        if (process.env.TRACE) console.log("finished init env");
-    } catch (error) {
-        console.error(`init env failed`, error);
-    }
+    if (process.env.TRACE) console.log("finished init env");
 }
 
 export function loadEnvFiles() {
@@ -47,7 +48,15 @@ export function getVaultKeys(path: string[]) {
     // load env for vault to temporary env; otherwise placeholders that target a field with VaultKey would be replaced before VaultValues are loaded
     const tempEnv = clone(process.env);
     const vaultEnv = config({ path, processEnv: tempEnv });
-    const vaultValues = pickBy(vaultEnv.parsed, (value) => value.startsWith("VaultKey"));
+
+    const isValueVaultKey = (value: string | undefined) => typeof value === "string" && value.startsWith(vaultKeyPrefix);
+    const isEnvPrefixAllowed = (key: string) => vaultKeyEnvPrefixes.some((prefix) => key.startsWith(prefix));
+
+    // collect VaultKey references from .env files and from process.env (env takes priority).
+    const fileVaultValues = pickBy(vaultEnv.parsed, (value) => isValueVaultKey(value));
+    const envVaultValues = pickBy(process.env, (value, key) => isEnvPrefixAllowed(key) && isValueVaultKey(value));
+    const vaultValues = { ...fileVaultValues, ...envVaultValues };
+
     const vaultEnvExpanded = expand({ parsed: vaultValues, processEnv: tempEnv });
 
     return invert(vaultEnvExpanded.parsed);
@@ -88,16 +97,4 @@ export function loadBranchName() {
     populate(process.env, parsed);
 
     if (process.env.TRACE) console.log("set branch", parsed);
-}
-
-export function loadLogValues() {
-    const defaultLogLevel = "info";
-    const defaultLogFile = "logs/log.json";
-
-    const defaultLogValues = {
-        Logger_LogFile: process.env.Logger_LogFile || defaultLogFile,
-        Logger_LogLevel: process.env.Logger_LogLevel || defaultLogLevel
-    };
-
-    populate(process.env, defaultLogValues);
 }
