@@ -84,7 +84,7 @@ program
             logger.info("Completed migration");
         } catch (error) {
             logger.error(`ERROR: ${error.message}`, error.stack);
-            error.migrated.forEach((fileName) => logger.error(`MIGRATED UP: ${fileName}`));
+            error.migrated.forEach((fileName: string) => logger.error(`MIGRATED UP: ${fileName}`));
             hasError = 1;
         } finally {
             await elasticClient.syncLogValues();

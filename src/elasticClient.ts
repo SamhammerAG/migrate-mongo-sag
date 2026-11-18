@@ -42,8 +42,8 @@ function initElasticClient() {
     const client = new Client({
         node: process.env.Logger_ClientUrl,
         auth: {
-            username: process.env.Logger_ClientUsername,
-            password: process.env.Logger_ClientPassword
+            username: process.env.Logger_ClientUsername!,
+            password: process.env.Logger_ClientPassword!
         }
     });
 

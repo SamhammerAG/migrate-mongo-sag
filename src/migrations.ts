@@ -8,8 +8,8 @@ export async function initMigrations() {
     if (!process.env.Brand) throw new Error("enviroment variable Brand is required");
 
     const rootDir = await resolveMigrationsDirPath();
-    const defaultDir = path.join(rootDir, process.env.DefaultMigrationsDir);
-    const brandDir = path.join(rootDir, process.env.Brand);
+    const defaultDir = path.join(rootDir, process.env.DefaultMigrationsDir!);
+    const brandDir = path.join(rootDir, process.env.Brand!);
 
     const tempDir = await initTempDir();
     await copyMigrationFiles(defaultDir, tempDir);
@@ -25,7 +25,7 @@ export async function initCreateMigrations(useDefaultMigrations: boolean | undef
 
     const subDir = useDefaultMigrations ? process.env.DefaultMigrationsDir : process.env.Brand;
     const rootDir = await resolveMigrationsDirPath();
-    const migrationDir = path.join(rootDir, subDir);
+    const migrationDir = path.join(rootDir, subDir!);
 
     // config must be updated at last, cause resolveMigrationsDirPath must get rootDir from original config
     await updateConfig(migrationDir);
@@ -88,6 +88,6 @@ async function copyMigrationFiles(srcDir: string, destinationDir: string) {
 
 async function resolveMigrationsDirPath() {
     const configContent = await config.read();
-    const migrationsDir = configContent.migrationsDir;
+    const migrationsDir = configContent.migrationsDir!;
     return path.isAbsolute(migrationsDir) ? migrationsDir : path.join(process.cwd(), migrationsDir);
 }

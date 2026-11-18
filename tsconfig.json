@@ -6,8 +6,8 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "strict": false,
-    "noImplicitThis": true,
+    "strict": true,
+    "useUnknownInCatchVariables": false,
     "skipLibCheck": true,
     "noEmit": true,
     "types": ["node"]

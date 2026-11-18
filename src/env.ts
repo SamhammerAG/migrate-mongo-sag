@@ -46,7 +46,7 @@ export async function loadVault() {
 
 export function getVaultKeys(path: string[]) {
     // load env for vault to temporary env; otherwise placeholders that target a field with VaultKey would be replaced before VaultValues are loaded
-    const tempEnv = clone(process.env);
+    const tempEnv = clone(process.env) as Record<string, string>;
     const vaultEnv = config({ path, processEnv: tempEnv });
 
     const isValueVaultKey = (value: string | undefined) => typeof value === "string" && value.startsWith(vaultKeyPrefix);
@@ -55,11 +55,11 @@ export function getVaultKeys(path: string[]) {
     // collect VaultKey references from .env files and from process.env (env takes priority).
     const fileVaultValues = pickBy(vaultEnv.parsed, (value) => isValueVaultKey(value));
     const envVaultValues = pickBy(process.env, (value, key) => isEnvPrefixAllowed(key) && isValueVaultKey(value));
-    const vaultValues = { ...fileVaultValues, ...envVaultValues };
+    const vaultValues = { ...fileVaultValues, ...envVaultValues } as Record<string, string>;
 
     const vaultEnvExpanded = expand({ parsed: vaultValues, processEnv: tempEnv });
 
-    return invert(vaultEnvExpanded.parsed);
+    return invert(vaultEnvExpanded.parsed ?? {});
 }
 
 export async function loadCommand(cmd: Command) {
@@ -75,7 +75,7 @@ export async function loadCommand(cmd: Command) {
     if (brand) parsed.Brand = brand;
     if (app) parsed.App = app;
 
-    populate(process.env, parsed, { override: true });
+    populate(process.env as Record<string, string>, parsed, { override: true });
 
     if (process.env.TRACE) console.log("set options", parsed);
 }
@@ -94,7 +94,7 @@ export function loadBranchName() {
         .replace(/[\n\r\s]+$/, "");
 
     const parsed = { Branch: branchName };
-    populate(process.env, parsed);
+    populate(process.env as Record<string, string>, parsed);
 
     if (process.env.TRACE) console.log("set branch", parsed);
 }
