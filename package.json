@@ -17,7 +17,7 @@
   "scripts": {
     "build": "vite build",
     "migrate-mongo": "vite build && node dist/migrate-mongo.js",
-    "format": "prettier --write --parser typescript ./src",
+    "format": "prettier --write --experimental-cli src/",
     "lint": "eslint .",
     "test": "vitest run"
   },
@@ -32,7 +32,7 @@
     "globals": "^17.14.0",
     "jiti": "^2.7.0",
     "mongodb": "^4.17.2",
-    "prettier": "^3.3.2",
+    "prettier": "^3.9.10",
     "typescript": "^5.4.5",
     "typescript-eslint": "^8.72.1",
     "vite": "^6.4.3",
