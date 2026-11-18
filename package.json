@@ -33,7 +33,7 @@
     "jiti": "^2.7.0",
     "mongodb": "^4.17.2",
     "prettier": "^3.9.10",
-    "typescript": "^5.4.5",
+    "typescript": "~6.0.3",
     "typescript-eslint": "^8.72.1",
     "vite": "^6.4.3",
     "vitest": "~4.1.9"

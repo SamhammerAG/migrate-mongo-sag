@@ -1,21 +1,15 @@
 {
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"],
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "ignoreDeprecations": "6.0",
-    "useDefineForClassFields": true,
-    "jsx": "preserve",
-    "noImplicitThis": true,
+    "isolatedModules": true,
     "strict": false,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "noImplicitThis": true,
     "skipLibCheck": true,
-    "types": ["node"],
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "declaration": true
+    "noEmit": true,
+    "types": ["node"]
   }
 }
