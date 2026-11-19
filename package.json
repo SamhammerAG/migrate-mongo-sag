@@ -37,7 +37,7 @@
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.72.1",
     "vite": "^6.4.3",
-    "vitest": "~4.1.9"
+    "vitest": "^5.1.0"
   },
   "dependencies": {
     "@elastic/ecs-winston-format": "^1.5.3",

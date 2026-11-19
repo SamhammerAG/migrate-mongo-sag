@@ -1,13 +1,9 @@
-import { mergeConfig, defineConfig } from "vitest/config";
-import viteConfig from "./vite.config.mts";
+import { defineConfig } from "vitest/config";
 
-export default mergeConfig(
-    viteConfig,
-    defineConfig({
-        test: {
-            unstubEnvs: true,
-            unstubGlobals: true,
-            globals: true
-        }
-    })
-);
+export default defineConfig({
+    test: {
+        unstubEnvs: true,
+        unstubGlobals: true,
+        globals: true
+    }
+});
