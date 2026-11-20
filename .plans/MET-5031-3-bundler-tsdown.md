@@ -38,8 +38,8 @@ and the config below maps almost 1:1. Both need Node `^22.18 || ^24.11`, which V
       (name/version are read at runtime). The `require(...)` list of the old Vite and new tsdown output is identical.
 - [x] No `.d.ts` is emitted (it is a CLI and there is no `types` entry).
 - [ ] `yarn migrate-mongo` (build + run) works locally. Smoke test: `--help`, `status`, `create`,
-      `up` against a local test DB. Partly done: `--help` and `--version` work. `status`, `create` and `up`
-      against a local DB were not run (no DB access in the agent session); please run them manually.
+      `up` against a local test DB. Partly done: `--help` and `--version` work, and `yarn migrate-mongo up`
+      was verified manually against a local DB (with the ESM build from step 4). `status` and `create` are still open.
 - [x] The CI build passes, and `yarn npm publish --dry-run` shows the same file set as before.
       `yarn npm publish --dry-run` shows the same 4 files (LICENSE, README.md, dist/migrate-mongo.js,
       package.json). The CI steps (lint, typecheck, test, build) pass locally.

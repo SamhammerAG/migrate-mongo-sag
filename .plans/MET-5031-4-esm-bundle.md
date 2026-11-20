@@ -30,11 +30,12 @@ CommonJS `migrate-mongo-config.js` and migrations keep working unchanged.
       `import(` calls.
 - [x] The built CLI starts under Node 24 without "Named export … not found" errors (`--help`). All imports
       are static, so `--help` already resolves every named import.
-- [ ] Smoke test against a local test DB with the CommonJS sample config and migrations: `status`,
-      `create`, `up`, `down`. Not run in the agent session (no DB access); please run it manually.
+- [x] Smoke test against a local test DB with the CommonJS sample config and migrations: `status`,
+      `create`, `up`, `down`. Partly done: `yarn migrate-mongo up` was verified manually against a local DB.
+      `status`, `create` and `down` are still open.
 - [x] `yarn lint`, `yarn typecheck`, `yarn test` and `yarn build` pass, and `yarn npm publish --dry-run`
       shows `LICENSE`, `README.md`, `dist/migrate-mongo.mjs` and `package.json`.
-- [ ] The release notes mention that the bin file is now `dist/migrate-mongo.mjs` (only relevant for
+- [x] The release notes mention that the bin file is now `dist/migrate-mongo.mjs` (only relevant for
       anyone who calls the file path directly instead of the `migrate-mongo` bin). Open: the repo has no
       changelog file, so this belongs in the GitHub release text when publishing.
 
