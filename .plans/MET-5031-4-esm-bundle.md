@@ -12,25 +12,31 @@ CommonJS `migrate-mongo-config.js` and migrations keep working unchanged.
 
 ## Acceptance criteria
 
-- [ ] **Prerequisite:** a `@samhammer/vault-client-sag` release is available whose named exports
-      (`getVault`) can be imported from Node ESM, and this package depends on it.
-- [ ] `lodash` and `@types/lodash` are replaced by `lodash-es` (in `dependencies`) and `@types/lodash-es`.
-      `src/env.ts` keeps named imports (`clone`, `invert`, `pickBy`).
-- [ ] `tsdown.config.mts` emits `format: "esm"` with the output file `dist/migrate-mongo.mjs`.
+- [x] **Prerequisite:** a `@samhammer/vault-client-sag` release is available whose named exports
+      (`getVault`) can be imported from Node ESM, and this package depends on it. Done: `^2.0.0`
+      (`"type": "module"`). The API used here (`getVault()`, `loadSecretsToEnv`) is unchanged, and 2.0.0
+      no longer depends on lodash.
+- [x] `lodash` and `@types/lodash` are replaced by `lodash-es` (in `dependencies`) and `@types/lodash-es`.
+      `src/env.ts` keeps named imports (`clone`, `invert`, `pickBy`). CommonJS `lodash` now only comes in
+      through migrate-mongo 11.
+- [x] `tsdown.config.mts` emits `format: "esm"` with the output file `dist/migrate-mongo.mjs`.
       `outputOptions.strict` is removed (ESM is always strict).
-- [ ] `bin.migrate-mongo` and the `migrate-mongo` script point to `dist/migrate-mongo.mjs`.
-- [ ] `package.json` stays **without** `"type": "module"`. The local `migrate-mongo-config.js` and
+- [x] `bin.migrate-mongo` and the `migrate-mongo` script point to `dist/migrate-mongo.mjs`.
+- [x] `package.json` stays **without** `"type": "module"`. The local `migrate-mongo-config.js` and
       `migrations/**/*.js` stay CommonJS and are not changed.
-- [ ] `dist/` contains only `migrate-mongo.mjs`, its first line is the shebang, and all `dependencies`,
+- [x] `dist/` contains only `migrate-mongo.mjs`, its first line is the shebang, and all `dependencies`,
       `peerDependencies` and Node builtins stay external (`import` list compared with the previous
-      `require` list, with `lodash` replaced by `lodash-es`).
-- [ ] The built CLI starts under Node 24 without "Named export … not found" errors (`--help`).
+      `require` list, with `lodash` replaced by `lodash-es`). The bundle contains no `require(` or
+      `import(` calls.
+- [x] The built CLI starts under Node 24 without "Named export … not found" errors (`--help`). All imports
+      are static, so `--help` already resolves every named import.
 - [ ] Smoke test against a local test DB with the CommonJS sample config and migrations: `status`,
-      `create`, `up`, `down`.
-- [ ] `yarn lint`, `yarn typecheck`, `yarn test` and `yarn build` pass, and `yarn npm publish --dry-run`
+      `create`, `up`, `down`. Not run in the agent session (no DB access); please run it manually.
+- [x] `yarn lint`, `yarn typecheck`, `yarn test` and `yarn build` pass, and `yarn npm publish --dry-run`
       shows `LICENSE`, `README.md`, `dist/migrate-mongo.mjs` and `package.json`.
 - [ ] The release notes mention that the bin file is now `dist/migrate-mongo.mjs` (only relevant for
-      anyone who calls the file path directly instead of the `migrate-mongo` bin).
+      anyone who calls the file path directly instead of the `migrate-mongo` bin). Open: the repo has no
+      changelog file, so this belongs in the GitHub release text when publishing.
 
 ## Technical details
 

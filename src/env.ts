@@ -1,7 +1,7 @@
 import { config, populate } from "dotenv";
 import { expand } from "dotenv-expand";
 import { getVault } from "@samhammer/vault-client-sag";
-import { clone, invert, pickBy } from "lodash";
+import { clone, invert, pickBy } from "lodash-es";
 import { execSync } from "child_process";
 import type { Command } from "commander";
 
