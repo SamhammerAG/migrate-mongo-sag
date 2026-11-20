@@ -48,7 +48,7 @@ Commands:
 ## Basic Setup
 
 -   create a ".env" file and ".env.local" (optional) file
--   create a "migrate-mongo.config.js" file
+-   create a "migrate-mongo-config.js" file
 -   create a "migrations" directory
     -   create sub-directory "default"
     -   create sub-directory per "brand"
@@ -111,7 +111,7 @@ $env:MongoDbOptions__AdminPassword = "VaultKey--kv-v2/data/mongodb/prod/Password
 yarn migrate-mongo status
 ```
 
-#### sample migrate-mongo.config.js
+#### sample migrate-mongo-config.js
 
 with this config we can map settings defined in environment for migrate-mongo<br>
 we can access settings defined in environment variables or .env files by process.env

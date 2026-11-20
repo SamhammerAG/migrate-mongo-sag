@@ -2,7 +2,7 @@
   "name": "@samhammer/migrate-mongo-sag",
   "version": "0.0.0",
   "bin": {
-    "migrate-mongo": "dist/migrate-mongo.js"
+    "migrate-mongo": "dist/migrate-mongo.mjs"
   },
   "files": [
     "dist/**/*"
@@ -15,8 +15,8 @@
   "author": "SamhammerAG",
   "license": "MIT",
   "scripts": {
-    "build": "vite build",
-    "migrate-mongo": "vite build && node dist/migrate-mongo.js",
+    "build": "tsdown",
+    "migrate-mongo": "tsdown && node dist/migrate-mongo.mjs",
     "format": "prettier --write --experimental-cli src/",
     "lint": "eslint .",
     "typecheck": "tsc",
@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@types/lodash": "^4.17.24",
+    "@types/lodash-es": "^4.17.12",
     "@types/migrate-mongo": "^8.2.0",
     "@types/node": "^24.13.2",
     "eslint": "^10.14.0",
@@ -34,20 +34,21 @@
     "jiti": "^2.7.0",
     "mongodb": "^4.17.2",
     "prettier": "^3.9.10",
+    "tsdown": "~0.23.5",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.72.1",
-    "vite": "^6.4.3",
-    "vitest": "~4.1.9"
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
   },
   "dependencies": {
     "@elastic/ecs-winston-format": "^1.5.3",
     "@elastic/elasticsearch": "~7.17.14",
-    "@samhammer/vault-client-sag": "^1.5.0",
+    "@samhammer/vault-client-sag": "^2.0.0",
     "commander": "^12.1.0",
     "date-fns": "^4.4.0",
     "dotenv": "^16.6.1",
     "dotenv-expand": "^11.0.7",
-    "lodash": "^4.18.1",
+    "lodash-es": "^4.18.1",
     "migrate-mongo": "^11.0.0",
     "winston": "^3.19.0"
   },
