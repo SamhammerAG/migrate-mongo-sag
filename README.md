@@ -15,6 +15,8 @@ this tool additionally supports:
 
 -   yarn 4.x
 -   node 24.x
+-   mongodb driver 5.x, 6.x or 7.x as peer dependency (`yarn add mongodb`); 4.x is no longer supported
+    -   use mongodb driver 7.3 or newer when connecting to MongoDB server 9.0
 
 ## Installation
 
@@ -144,6 +146,33 @@ module.exports = {
     moduleSystem: "commonjs"
 };
 ```
+
+## Migration scripts
+
+migration scripts must export async `up(db, client)` and `down(db, client)` functions (or return a Promise).<br>
+callback-based migrations (`up(db, next)`) are no longer supported since migrate-mongo 14.
+
+```js
+module.exports = {
+    /**
+     * @param {import('mongodb').Db} db
+     * @param {import('mongodb').MongoClient} client
+     */
+    async up(db, client) {
+        await db.collection("albums").updateOne({ artist: "The Beatles" }, { $set: { blacklisted: true } });
+    },
+
+    async down(db, client) {
+        await db.collection("albums").updateOne({ artist: "The Beatles" }, { $set: { blacklisted: false } });
+    }
+};
+```
+
+when updating the mongodb driver in a project, check the existing migration scripts against the breaking changes of the driver:
+
+-   https://github.com/mongodb/node-mongodb-native/blob/HEAD/etc/notes/CHANGES_5.0.0.md
+-   https://github.com/mongodb/node-mongodb-native/blob/HEAD/etc/notes/CHANGES_6.0.0.md
+-   https://github.com/mongodb/node-mongodb-native/blob/HEAD/etc/notes/CHANGES_7.0.0.md
 
 ## How to publish
 
