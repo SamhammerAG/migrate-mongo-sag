@@ -15,7 +15,7 @@ this tool additionally supports:
 
 -   yarn 4.x
 -   node 24.x
--   mongodb driver 5.x, 6.x or 7.x as peer dependency (`yarn add mongodb`); 4.x is no longer supported
+-   mongodb driver 6.9+ or 7.x as peer dependency (`yarn add mongodb`); 4.x and 5.x are no longer supported
     -   use mongodb driver 7.3 or newer when connecting to MongoDB server 9.0
 
 ## Installation

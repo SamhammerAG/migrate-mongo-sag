@@ -406,7 +406,7 @@ __metadata:
     "@types/lodash-es": "npm:^4.17.12"
     "@types/migrate-mongo": "npm:^14.0.0"
     "@types/node": "npm:^24.13.2"
-    commander: "npm:^12.1.0"
+    commander: "npm:^14.0.2"
     date-fns: "npm:^4.4.0"
     dotenv: "npm:^16.6.1"
     dotenv-expand: "npm:^11.0.7"
@@ -426,7 +426,7 @@ __metadata:
     vitest: "npm:^5.1.0"
     winston: "npm:^3.19.0"
   peerDependencies:
-    mongodb: ^5.0.0 || ^6.0.0 || ^7.0.0
+    mongodb: ^6.9.0 || ^7.0.0
   bin:
     migrate-mongo: dist/migrate-mongo.mjs
   languageName: unknown
@@ -1121,13 +1121,6 @@ __metadata:
   dependencies:
     delayed-stream: "npm:~1.0.0"
   checksum: 10c0/0dbb829577e1b1e839fa82b40c07ffaf7de8a09b935cadd355a73652ae70a88b4320db322f6634a4ad93424292fa80973ac6480986247f1734a1137debf271d5
-  languageName: node
-  linkType: hard
-
-"commander@npm:^12.1.0":
-  version: 12.1.0
-  resolution: "commander@npm:12.1.0"
-  checksum: 10c0/6e1996680c083b3b897bfc1cfe1c58dfbcd9842fd43e1aaf8a795fbc237f65efcc860a3ef457b318e73f29a4f4a28f6403c3d653d021d960e4632dd45bde54a9
   languageName: node
   linkType: hard
 

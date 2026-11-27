@@ -44,7 +44,7 @@
     "@elastic/ecs-winston-format": "^1.5.3",
     "@elastic/elasticsearch": "~7.17.14",
     "@samhammer/vault-client-sag": "^2.0.0",
-    "commander": "^12.1.0",
+    "commander": "^14.0.2",
     "date-fns": "^4.4.0",
     "dotenv": "^16.6.1",
     "dotenv-expand": "^11.0.7",
@@ -53,7 +53,7 @@
     "winston": "^3.19.0"
   },
   "peerDependencies": {
-    "mongodb": "^5.0.0 || ^6.0.0 || ^7.0.0"
+    "mongodb": "^6.9.0 || ^7.0.0"
   },
   "volta": {
     "node": "24.22.1",
